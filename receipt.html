@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="full-wrap">
+        <div class="recept-title">
+            <h1><span>R</span>eceipt</h1>
+        </div>
+
+        <div id="paymentDetails">
+            <p id="cardName"><span>Card Holder:</span> </p>
+            <p id="paymentAmount"><span>Payment Amount:</span> </p>
+            <p id="trackingNumber"><span>Tracking Number:</span> </p>
+        </div>
+
+        <p id="paymentMessage">Payment Successful!</p>
+
+        <div class="submit">
+            <button id="submitBtn" class="btn btn-primary" type="submit">Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return Object.fromEntries(urlParams.entries());
+        }
+
+        // Function to decode URL encoded string
+        function decodeString(encodedString) {
+            return decodeURIComponent(encodedString.replace(/\+/g, ' '));
+        }
+
+        // Function to generate a random tracking number
+        function generateTrackingNumber() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+
+        // Function to display payment details
+        
+    // Function to display payment details
+    function displayPaymentDetails() {
+        // Get card details from URL
+        const params = getUrlParams();
+        const cardDetails = JSON.parse(decodeString(params.details));
+
+        // Calculate payment amount (you can adjust this calculation as needed)
+        const paymentAmountUSD = 100; // Example: $100 USD
+
+        // Generate random tracking number
+        const trackingNumber = generateTrackingNumber();
+
+        // Display payment details with space after colon
+        document.getElementById("cardName").innerText += " " + cardDetails.cardHolder;
+        document.getElementById("paymentAmount").innerText += " $" + paymentAmountUSD.toFixed(2);
+        document.getElementById("trackingNumber").innerText += " " + trackingNumber;
+
+        // Clear query parameter from URL to prevent showing sensitive information in the browser history
+        history.replaceState({}, document.title, window.location.pathname);
+    }
+
+        // Function to redirect to the home page
+        function redirectToHome() {
+            window.location.href = "Card.html";
+        }
+
+        // Call the function to display payment details when the page loads
+        window.onload = displayPaymentDetails;
+
+        // Add click event listener to the submit button
+        document.getElementById("submitBtn").addEventListener("click", redirectToHome);
+    </script>
+</body>
+</html>
